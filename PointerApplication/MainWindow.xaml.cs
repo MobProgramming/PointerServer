@@ -12,7 +12,6 @@ using Microsoft.Owin.Hosting;
 using Microsoft.Owin.StaticFiles;
 using Owin;
 using Image = System.Windows.Controls.Image;
-using Point = System.Windows.Point;
 
 namespace PointerApplication
 {
@@ -21,7 +20,6 @@ namespace PointerApplication
     {
         private const double CLIENT_DISPLAY_HEIGHT = 480;
         private const double CLIENT_DISPLAY_WIDTH = 640;
-        private const double CLIENT_DISPLAY_OFFSET_PERCENTAGE = .93;
 
         public MainWindow()
         {
@@ -42,16 +40,14 @@ namespace PointerApplication
                     if (positionData.ScreenPosition >= Screen.AllScreens.Count())
                         positionData.ScreenPosition = 0;
                     Rectangle rectangle = Screen.AllScreens[positionData.ScreenPosition].Bounds;
-                    var multiplier = GetScreenMultiplier(rectangle);
-                    var offSet = GetOffSetScreenMargin(positionData.ScreenPosition);
                     Dispatcher.InvokeAsync(() =>
                     {
                         var screenWidthPercentage = positionData.HorizontalPosition / CLIENT_DISPLAY_WIDTH;
                         var screenHeightPercentage = positionData.VerticalPosition / CLIENT_DISPLAY_HEIGHT;
                         var screenPositionX = screenWidthPercentage * rectangle.Width;
                         var screenPositionY = screenHeightPercentage * rectangle.Height;
-                        
-                        this.Left = (screenPositionX   + rectangle.X) / Screen.AllScreens.Count();
+
+                        this.Left = (screenPositionX + rectangle.X) / Screen.AllScreens.Count();
                         this.Top = (screenPositionY + rectangle.Y) / Screen.AllScreens.Count();
                         this.Show();
                         this.Activate();
@@ -59,17 +55,6 @@ namespace PointerApplication
                 }
             });
             hubPointerConnection.Start();
-        }
-
-        private int GetOffSetScreenMargin(int screenPosition)
-        {
-            var offSet = 0;
-            for (int i = 0; i < screenPosition; i++)
-            {
-                offSet += ((Rectangle) Screen.AllScreens[i].Bounds).Width;
-            }
-
-            return offSet;
         }
 
         private PositionData ParsePositionData(string data)
@@ -82,12 +67,6 @@ namespace PointerApplication
                 VerticalPosition = int.Parse(items[2])
             };
         }
-
-        private double GetScreenMultiplier(Rectangle rectangle)
-        {
-            return rectangle.Height / CLIENT_DISPLAY_HEIGHT * CLIENT_DISPLAY_OFFSET_PERCENTAGE;
-        }
-
 
         private void Image_Loaded(object sender, RoutedEventArgs e)
         {
@@ -117,11 +96,6 @@ namespace PointerApplication
         public int HorizontalPosition { get; set; }
     }
 
-    internal class ScreenSize
-    {
-        public int Width { get; set; }
-        public int Height { get; set; }
-    }
 
     class Startup
     {
