@@ -46,9 +46,13 @@ namespace PointerApplication
                     var offSet = GetOffSetScreenMargin(positionData.ScreenPosition);
                     Dispatcher.InvokeAsync(() =>
                     {
-                     
-                        this.Left = positionData.HorizontalPosition * multiplier + (offSet*CLIENT_DISPLAY_OFFSET_PERCENTAGE) ;
-                        this.Top = positionData.VerticalPosition * multiplier;
+                        var screenWidthPercentage = positionData.HorizontalPosition / CLIENT_DISPLAY_WIDTH;
+                        var screenHeightPercentage = positionData.VerticalPosition / CLIENT_DISPLAY_HEIGHT;
+                        var screenPositionX = screenWidthPercentage * rectangle.Width;
+                        var screenPositionY = screenHeightPercentage * rectangle.Height;
+                        
+                        this.Left = (screenPositionX   + rectangle.X) / Screen.AllScreens.Count();
+                        this.Top = (screenPositionY + rectangle.Y) / Screen.AllScreens.Count();
                         this.Show();
                         this.Activate();
                     });
