@@ -1,0 +1,21 @@
+﻿<Window x:Class="PointerApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525" 
+        WindowStartupLocation="Manual"
+        Topmost="True" AllowsTransparency="True" WindowStyle="None" Deactivated="MainWindow_OnDeactivated">
+    <Window.Background>
+        <SolidColorBrush Opacity="0.0" Color="White"/>
+    </Window.Background>
+    <Grid>
+        <Image Name="LookHereImage"
+	    HorizontalAlignment="Left"
+	    Height="100"
+	    Margin="10,10,0,0"
+	    VerticalAlignment="Top"
+	    Width="100"
+	    Loaded="Image_Loaded"
+               />
+
+    </Grid>
+</Window>

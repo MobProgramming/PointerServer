@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.min.js"></script>
+    <script src="/signalr/hubs"></script>
+
+    <style type="text/css">
+        body {
+            background-color: #FFF;
+            margin: 30px;
+            margin-top: 10px;
+        }
+
+        #contentContainer {
+            width: 640px;
+            height: 480px;
+            border: 5px black solid;
+            overflow: hidden;
+            background-color: #F2F2F2;
+            cursor: pointer;
+        }
+
+        #lookHereImage {
+            position: relative;
+            left: 50px;
+            top: 50px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <script type="text/javascript">
+        function Initialize() {
+            $.connection.hub.url = "/signalr";
+            var hubMessenger = $.connection.pointerHub;
+           
+            $.connection.hub.start().done(function () {
+
+                var lookHereImage = document.querySelector("#lookHereImage");
+                var contentContainer = document.querySelector("#contentContainer");
+
+                var xFinalPosition = 0;
+                var yFinalPosition = 0;
+
+                function getPosition(element) {
+                    var xPosition = 0;
+                    var yPosition = 0;
+
+                    while (element) {
+                        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                        element = element.offsetParent;
+                    }
+                    return { x: xPosition, y: yPosition };
+                }
+
+                function movePointerPositionToNewLocation(xPosition, yPosition) {
+                    lookHereImage.style.left = xPosition + "px";
+                    lookHereImage.style.top = yPosition + "px";
+                }
+
+                function sendPointerServerNewLocation(selectedScreen, xPosition, yPosition) {
+                    
+                    var positions = selectedScreen + "," + xPosition + "," + yPosition;
+                    hubMessenger.server.send("position", positions);
+                }
+
+                function getSelectedScreen() {
+                    var screenId = $('input[name=screen]:checked').val();
+                    if (screenId === undefined)
+                        return '0';
+                    return screenId;
+                }
+                function getClickPosition(e) {
+                    var parentPosition = getPosition(e.currentTarget);
+                    var selectedScreen = getSelectedScreen();
+                    xFinalPosition = e.clientX - parentPosition.x - (lookHereImage.clientWidth / 2);
+                    yFinalPosition = e.clientY - parentPosition.y - (lookHereImage.clientHeight / 2);
+
+                    movePointerPositionToNewLocation(xFinalPosition, yFinalPosition);
+                    
+                    sendPointerServerNewLocation(selectedScreen,xFinalPosition, yFinalPosition);
+                }
+
+                contentContainer.addEventListener("click", getClickPosition);
+
+            });
+
+
+        }
+
+        Initialize();
+
+
+    </script>
+    <fieldset>
+        <label>Monitor 1</label><input type="radio" id="screen1" name="screen" value="0" />
+        <label>Monitor 2</label><input type="radio" id="screen2" name="screen" value="1" />
+        <label>Monitor 3</label><input type="radio" id="screen3" name="screen" value="2" />
+    </fieldset>
+        <div id="contentContainer">
+        <img id="lookHereImage" src="small_red_dot.png">
+    </div>
+
+<script>
+    $("#screen1").checked = true;
+</script>
+</body>
+</html>
