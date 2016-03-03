@@ -43,8 +43,8 @@ namespace PointerApplication
                         var screenPositionX = screenWidthPercentage * selectedScreen.Width;
                         var screenPositionY = screenHeightPercentage * selectedScreen.Height;
 
-                        this.Left = screenPositionX + selectedScreen.X;
-                        this.Top = screenPositionY + selectedScreen.Y;
+                        this.Left = (screenPositionX + selectedScreen.X) / 2;
+                        this.Top = (screenPositionY + selectedScreen.Y) /2;
 
                         this.Show();
                         this.Activate();
