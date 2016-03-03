@@ -88,17 +88,19 @@
                 }
 
                 function getTouchPosition(e) {
+                    e.preventDefault();
                     var selectedScreen = getSelectedScreen();
-                    if (e.targetTouches.length === 1) {
-                        var touchPosition = e.targetTouches[0];
+                    if (e.touches.length === 1) {
+                        var touchPosition = e.touches[0];
                         movePointerPositionToNewLocation(touchPosition.pageX, touchPosition.pageY);
                         sendPointerServerNewLocation(selectedScreen, touchPosition.pageX, touchPosition.pageY);
                     }
                 }
 
 
-                var canvas = $("#canvas");
-                canvas.addEventListener("touchmove", getTouchPosition, false);
+                var canvasObject = document.getElementById("canvasSurface");
+
+                canvasObject.addEventListener("touchmove", getTouchPosition, false);
                 contentContainer.addEventListener("click", getClickPosition);
 
             });
@@ -119,10 +121,11 @@
     <img id="lookHereImage" src="small_red_dot.png">
 </div>
 
-<canvas id="canvas" width="640" height="480">
+<div>
+<canvas id="canvasSurface" width="640" height="480">
     
 </canvas>
-
+    </div>
 
 <script>
     $("#screen1").prop('checked', true);

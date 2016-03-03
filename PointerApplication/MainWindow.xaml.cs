@@ -5,12 +5,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Client;
-using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
-using Microsoft.Owin.StaticFiles;
-using Owin;
 using Image = System.Windows.Controls.Image;
 
 namespace PointerApplication
@@ -39,16 +35,17 @@ namespace PointerApplication
                     var positionData = ParsePositionData(data);
                     if (positionData.ScreenPosition >= Screen.AllScreens.Count())
                         positionData.ScreenPosition = 0;
-                    Rectangle rectangle = Screen.AllScreens[positionData.ScreenPosition].Bounds;
+                    Rectangle selectedScreen = Screen.AllScreens[positionData.ScreenPosition].Bounds;
                     Dispatcher.InvokeAsync(() =>
                     {
                         var screenWidthPercentage = positionData.HorizontalPosition / CLIENT_DISPLAY_WIDTH;
                         var screenHeightPercentage = positionData.VerticalPosition / CLIENT_DISPLAY_HEIGHT;
-                        var screenPositionX = screenWidthPercentage * rectangle.Width;
-                        var screenPositionY = screenHeightPercentage * rectangle.Height;
+                        var screenPositionX = screenWidthPercentage * selectedScreen.Width;
+                        var screenPositionY = screenHeightPercentage * selectedScreen.Height;
 
-                        this.Left = (screenPositionX + rectangle.X) / Screen.AllScreens.Count();
-                        this.Top = (screenPositionY + rectangle.Y) / Screen.AllScreens.Count();
+                        this.Left = screenPositionX + selectedScreen.X;
+                        this.Top = screenPositionY + selectedScreen.Y;
+
                         this.Show();
                         this.Activate();
                     });
@@ -88,35 +85,4 @@ namespace PointerApplication
             this.Hide();
         }
     }
-
-    internal class PositionData
-    {
-        public int VerticalPosition { get; set; }
-        public int ScreenPosition { get; set; }
-        public int HorizontalPosition { get; set; }
-    }
-
-
-    class Startup
-    {
-        public void Configuration(IAppBuilder app)
-        {
-            app.UseDefaultFiles(new DefaultFilesOptions
-            {
-                DefaultFileNames = Enumerable.Repeat("index.html", 1).ToList()
-            });
-            app.UseStaticFiles();
-            app.UseCors(CorsOptions.AllowAll);
-            app.MapSignalR();
-        }
-    }
-    public class PointerHub : Hub
-    {
-        public void Send(string name, string message)
-        {
-            Clients.All.addMessage(name, message);
-        }
-    }
-
-
 }

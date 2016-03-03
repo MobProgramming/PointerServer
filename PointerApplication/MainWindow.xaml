@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="224" Width="224" 
         WindowStartupLocation="Manual"
-        Topmost="True" AllowsTransparency="True" WindowStyle="None" Deactivated="MainWindow_OnDeactivated">
+        Topmost="True" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False" Deactivated="MainWindow_OnDeactivated">
     <Window.Background>
         <SolidColorBrush Opacity="0.0" Color="White"/>
     </Window.Background>
