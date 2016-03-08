@@ -16,17 +16,16 @@ namespace PointerApplication
     {
         private const double CLIENT_DISPLAY_HEIGHT = 480;
         private const double CLIENT_DISPLAY_WIDTH = 640;
-
+        private const string REMOTE_URL_PATH = "http://{0}:8181";
         public MainWindow()
         {
             InitializeComponent();
 
-            var machineName = Environment.MachineName;
+            
+            string remoteUrl = String.Format(REMOTE_URL_PATH, Environment.MachineName);
+            WebApp.Start<Startup>(remoteUrl);
 
-            string url = String.Format("http://{0}:8181", machineName);
-            WebApp.Start<Startup>(url);
-
-            var hubPointerConnection = new HubConnection(url);
+            var hubPointerConnection = new HubConnection(remoteUrl);
             var hubPointerProxy = hubPointerConnection.CreateHubProxy("PointerHub");
             hubPointerProxy.On<string, string>("addMessage", (invoker, data) =>
             {
@@ -36,6 +35,7 @@ namespace PointerApplication
                     if (positionData.ScreenPosition >= Screen.AllScreens.Count())
                         positionData.ScreenPosition = 0;
                     Rectangle selectedScreen = Screen.AllScreens[positionData.ScreenPosition].Bounds;
+                    var screenPositionDivisor = selectedScreen.Width > 1280 ? 2 : 1;
                     Dispatcher.InvokeAsync(() =>
                     {
                         var screenWidthPercentage = positionData.HorizontalPosition / CLIENT_DISPLAY_WIDTH;
@@ -43,8 +43,8 @@ namespace PointerApplication
                         var screenPositionX = screenWidthPercentage * selectedScreen.Width;
                         var screenPositionY = screenHeightPercentage * selectedScreen.Height;
 
-                        this.Left = (screenPositionX + selectedScreen.X) / 2;
-                        this.Top = (screenPositionY + selectedScreen.Y) /2;
+                        this.Left = (screenPositionX + selectedScreen.X) / screenPositionDivisor;
+                        this.Top = (screenPositionY + selectedScreen.Y) / screenPositionDivisor;
 
                         this.Show();
                         this.Activate();
