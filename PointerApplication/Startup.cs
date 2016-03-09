@@ -1,7 +1,10 @@
+using System.Configuration;
 using System.Linq;
 using Microsoft.Owin.Cors;
+using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
 using Owin;
+using System.Web.Http;
 
 namespace PointerApplication
 {
@@ -9,13 +12,23 @@ namespace PointerApplication
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseDefaultFiles(new DefaultFilesOptions
+            var rootDir = ConfigurationManager.AppSettings["rootFolder"];
+            var physicalFileSystem = new PhysicalFileSystem(rootDir);
+            var options = new FileServerOptions
             {
-                DefaultFileNames = Enumerable.Repeat("index.html", 1).ToList()
-            });
-            app.UseStaticFiles();
+                EnableDefaultFiles = true,
+                FileSystem = physicalFileSystem
+            };
+            options.StaticFileOptions.FileSystem = physicalFileSystem;
+            options.StaticFileOptions.ServeUnknownFileTypes = true;
+            options.DefaultFilesOptions.DefaultFileNames = new[]
+            {
+                "index.html"
+            };
+
+            app.UseFileServer(options);
             app.UseCors(CorsOptions.AllowAll);
-            app.MapSignalR();
+            app.UseFileServer(options);
         }
     }
 }
