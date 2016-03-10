@@ -25,10 +25,11 @@ namespace PointerApplication
             {
                 "index.html"
             };
-
+            
             app.UseFileServer(options);
             app.UseCors(CorsOptions.AllowAll);
             app.UseFileServer(options);
+            app.MapSignalR();
         }
     }
 }
