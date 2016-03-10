@@ -3,55 +3,27 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>Pointer App</title>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.min.js"></script>
     <script src="/signalr/hubs"></script>
-
     <script src="scripts/index.js"></script>
-    <style type="text/css">
-        body {
-            background-color: #FFF;
-            margin: 30px;
-            margin-top: 10px;
-        }
-
-        #contentContainer {
-            width: 640px;
-            height: 480px;
-            border: 5px black solid;
-            overflow: hidden;
-            background-color: #F2F2F2;
-            cursor: pointer;
-        }
-
-        #lookHereImage {
-            position: relative;
-            left: 50px;
-            top: 50px;
-        }
-    </style>
+    <link href="css/index.css" type="text/css"  rel="stylesheet" />
 
 </head>
 <body>
 
-    <script type="text/javascript">
-       
 
-
-    </script>
     <fieldset>
         <label>Monitor 1</label><input type="radio" id="screen1" name="screen" value="0" />
         <label>Monitor 2</label><input type="radio" id="screen2" name="screen" value="1" />
         <label>Monitor 3</label><input type="radio" id="screen3" name="screen" value="2" />
     </fieldset>
-<div id="contentContainer">
-    <img id="lookHereImage" src="small_red_dot.png">
+<div id="contentContainer" class="contentContainer">
+    <img id="lookHereImage" class="lookHereImage" src="small_red_dot.png">
 </div>
 
 
-<script>
-    $("#screen1").prop('checked', true);
-</script>
+
 </body>
 </html>

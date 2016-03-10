@@ -1,0 +1,20 @@
+﻿body {
+    background-color: #FFF;
+    margin: 30px;
+    margin-top: 10px;
+}
+
+.contentContainer {
+    width: 640px;
+    height: 480px;
+    border: 5px black solid;
+    overflow: hidden;
+    background-color: #F2F2F2;
+    cursor: pointer;
+}
+
+.lookHereImage {
+    position: relative;
+    left: 50px;
+    top: 50px;
+}

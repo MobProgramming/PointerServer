@@ -60,5 +60,5 @@
     }
 
     Initialize();
-
+    $("#screen1").prop('checked', true);
 });
