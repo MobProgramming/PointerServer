@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Configuration;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using Microsoft.AspNet.SignalR.Client;
 using Microsoft.Owin.Hosting;
+using Microsoft.AspNet.SignalR.Client;
 using Image = System.Windows.Controls.Image;
 
 namespace PointerApplication
@@ -17,6 +19,7 @@ namespace PointerApplication
         private const double CLIENT_DISPLAY_HEIGHT = 480;
         private const double CLIENT_DISPLAY_WIDTH = 640;
         private const string REMOTE_URL_PATH = "http://{0}:8181";
+ 
         public MainWindow()
         {
             InitializeComponent();
@@ -49,9 +52,14 @@ namespace PointerApplication
                         this.Show();
                         this.Activate();
                     });
-                }
+                } 
+
+                
+                
+
             });
             hubPointerConnection.Start();
+            
         }
 
         private PositionData ParsePositionData(string data)
@@ -60,16 +68,28 @@ namespace PointerApplication
             return new PositionData()
             {
                 ScreenPosition = int.Parse(items[0]),
-                HorizontalPosition = int.Parse(items[1]),
-                VerticalPosition = int.Parse(items[2])
+                HorizontalPosition = GetIntegerValue(items[1]),
+                VerticalPosition = GetIntegerValue(items[2])
             };
+        }
+
+        private int GetIntegerValue(string value)
+        {
+            var integerValue = 0.0;
+            if (double.TryParse(value, out integerValue))
+            {
+                return (int)integerValue;
+            }
+
+            return 0;
         }
 
         private void Image_Loaded(object sender, RoutedEventArgs e)
         {
+            var imageName = ConfigurationManager.AppSettings["pointerImage"];
             BitmapImage b = new BitmapImage();
             b.BeginInit();
-            var imagePath = Path.Combine(Environment.CurrentDirectory, "lookhere.png");
+            var imagePath = Path.Combine(Environment.CurrentDirectory, "images",imageName);
             b.UriSource = new Uri(imagePath);
             b.EndInit();
 

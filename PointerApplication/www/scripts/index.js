@@ -1,8 +1,12 @@
-﻿$(document).ready(function() {
+﻿var selectedMonitorIndex = 0;
+var monitorCount = 0;
 
-    function Initialize() {
+$(document).ready(function () {
+
+    function InitializeHub() {
         $.connection.hub.url = "/signalr";
         var hubMessenger = $.connection.pointerHub;
+
 
         $.connection.hub.start().done(function () {
 
@@ -35,30 +39,59 @@
                 hubMessenger.server.send("position", positions);
             }
 
-            function getSelectedScreen() {
-                var screenId = $('input[name=screen]:checked').val();
-                if (screenId === undefined)
-                    return '0';
-                return screenId;
-            }
+
+
             function getClickPosition(e) {
                 var parentPosition = getPosition(e.currentTarget);
-                var selectedScreen = getSelectedScreen();
                 xFinalPosition = e.clientX - parentPosition.x - (lookHereImage.clientWidth / 2);
                 yFinalPosition = e.clientY - parentPosition.y - (lookHereImage.clientHeight / 2);
 
                 movePointerPositionToNewLocation(xFinalPosition, yFinalPosition);
 
-                sendPointerServerNewLocation(selectedScreen, xFinalPosition, yFinalPosition);
+                sendPointerServerNewLocation(selectedMonitorIndex, xFinalPosition, yFinalPosition);
             }
 
-            contentContainer.addEventListener("click", getClickPosition);
+            function getDragOverPosition(e) {
+                e = e || window.event;
+                var parentPosition = getPosition(e.currentTarget);
+                xFinalPosition = e.pageX - parentPosition.x - (lookHereImage.clientWidth / 2);
+                yFinalPosition = e.pageY - parentPosition.y - (lookHereImage.clientHeight / 2);
 
+                movePointerPositionToNewLocation(xFinalPosition, yFinalPosition);
+
+                sendPointerServerNewLocation(selectedMonitorIndex, xFinalPosition, yFinalPosition);
+            };
+
+            contentContainer.addEventListener("click", getClickPosition);
+            contentContainer.addEventListener("dragover", getDragOverPosition, false);
+
+            hubMessenger.server.getMonitorCount().done(function (count) {
+                for (var i = 0; i < count; i++) {
+                    $("div[id^='monitor" + i + "']").toggleClass("hidden");
+                };
+            });
         });
+
+
 
 
     }
 
-    Initialize();
-    $("#screen1").prop('checked', true);
+    InitializeHub();
+
 });
+
+function DeselectAllMonitors() {
+    $("div[id^='monitor']").each(function () {
+        if (!$(this).hasClass("hidden")) {
+            $(this).prop("class", "inactiveMonitor");
+        }
+    });
+}
+
+function ActivateMonitor(monitorNumber) {
+    DeselectAllMonitors();
+    selectedMonitorIndex = monitorNumber;
+    $("div[id^='monitor" + monitorNumber + "']").prop("class", "activeMonitor");
+
+}

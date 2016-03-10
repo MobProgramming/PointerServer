@@ -12,18 +12,16 @@
 
 </head>
 <body>
+    
 
-
-    <fieldset>
-        <label>Monitor 1</label><input type="radio" id="screen1" name="screen" value="0" />
-        <label>Monitor 2</label><input type="radio" id="screen2" name="screen" value="1" />
-        <label>Monitor 3</label><input type="radio" id="screen3" name="screen" value="2" />
-    </fieldset>
-<div id="contentContainer" class="contentContainer">
-    <img id="lookHereImage" class="lookHereImage" src="small_red_dot.png">
+<div>
+    <div id="monitor0" class="activeMonitor hidden" onclick="ActivateMonitor('0')"></div>
+    <div id="monitor1" class="inactiveMonitor hidden" onclick="ActivateMonitor('1')"></div>
+    <div id="monitor2" class="inactiveMonitor hidden" onclick="ActivateMonitor('2')"></div>
 </div>
-
-
-
+<div id="contentContainer" class="contentContainer">
+    <img id="lookHereImage" class="lookHereImage" src="images/small_red_dot.png">
+</div>
+    
 </body>
 </html>

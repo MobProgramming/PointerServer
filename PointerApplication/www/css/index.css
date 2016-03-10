@@ -11,10 +11,35 @@
     overflow: hidden;
     background-color: #F2F2F2;
     cursor: pointer;
+    float: left;
+    position: relative;
 }
 
 .lookHereImage {
     position: relative;
     left: 50px;
     top: 50px;
+}
+
+.activeMonitor {
+     height: 60px;
+    width: 90px; 
+     background-repeat: no-repeat;
+    background-image: url('/images/monitor.png');
+    position: relative;
+    float: left;
+}
+
+
+.inactiveMonitor {
+     height: 60px;
+    width: 90px; 
+     background-repeat: no-repeat;
+    background-image: url('/images/monitor_gray.png');
+    position: relative;
+    float: left;
+}
+
+.hidden {
+    visibility: hidden;
 }
