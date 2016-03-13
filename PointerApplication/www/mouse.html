@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Pointer App</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.min.js"></script>
+    <script src="/signalr/hubs"></script>
+    <script src="scripts/mouse.js"></script>
+    <link href="css/shared.css" type="text/css" rel="stylesheet"/>
+    <link href="css/mouse.css" type="text/css" rel="stylesheet"/>
+
+</head>
+<body>
+    
+
+<div>
+    <div id="monitor0" class="activeMonitor hidden" onclick="ActivateMonitor('0')"></div>
+    <div id="monitor1" class="inactiveMonitor hidden" onclick="ActivateMonitor('1')"></div>
+    <div id="monitor2" class="inactiveMonitor hidden" onclick="ActivateMonitor('2')"></div>
+</div>
+<div id="contentContainer" class="contentContainer">
+    <img id="lookHereImage" class="lookHereImage" src="images/small_red_dot.png">
+</div>
+
+
+</body>
+</html>

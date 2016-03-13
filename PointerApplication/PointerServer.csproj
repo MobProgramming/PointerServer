@@ -195,7 +195,13 @@
     <None Include="images\green-triangle-arrow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="www\css\index.css">
+    <Content Include="www\css\shared.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\css\touch.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\css\mouse.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="www\images\monitor.png">
@@ -204,10 +210,19 @@
     <None Include="www\images\monitor_gray.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="www\index.html">
+    <None Include="www\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="www\scripts\touch.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="www\scripts\index.js">
+    <Content Include="www\touch.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\mouse.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\scripts\mouse.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="www\images\small_red_dot.png">

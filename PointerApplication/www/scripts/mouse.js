@@ -33,6 +33,11 @@ $(document).ready(function () {
                 lookHereImage.style.top = yPosition + "px";
             }
 
+            function movePointerPositionToNewLocation2(xPosition, yPosition) {
+                lookHereImage2.style.left = xPosition + "px";
+                lookHereImage2.style.top = yPosition + "px";
+            }
+
             function sendPointerServerNewLocation(selectedScreen, xPosition, yPosition) {
 
                 var positions = selectedScreen + "," + xPosition + "," + yPosition;
@@ -62,6 +67,7 @@ $(document).ready(function () {
                 sendPointerServerNewLocation(selectedMonitorIndex, xFinalPosition, yFinalPosition);
             };
 
+           
             contentContainer.addEventListener("click", getClickPosition);
             contentContainer.addEventListener("dragover", getDragOverPosition, false);
 

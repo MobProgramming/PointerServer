@@ -1,0 +1,12 @@
+﻿html,body {
+    background-color: #FFF;
+    height: 100%;
+    width: 100%;
+}
+
+.canvasContainer {
+    height: 90%;
+    width: 90%;
+}
+
+

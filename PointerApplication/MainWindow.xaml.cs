@@ -35,6 +35,8 @@ namespace PointerApplication
                 if (invoker == "position")
                 {
                     var positionData = ParsePositionData(data);
+                    if (positionData == null)
+                        return;
                     if (positionData.ScreenPosition >= Screen.AllScreens.Count())
                         positionData.ScreenPosition = 0;
                     Rectangle selectedScreen = Screen.AllScreens[positionData.ScreenPosition].Bounds;
@@ -54,9 +56,6 @@ namespace PointerApplication
                     });
                 } 
 
-                
-                
-
             });
             hubPointerConnection.Start();
             
@@ -65,11 +64,15 @@ namespace PointerApplication
         private PositionData ParsePositionData(string data)
         {
             var items = data.Split(',');
+            var horizontalPosition = items[1];
+            var verticalPosition = items[2];
+            if (horizontalPosition == "NaN" || verticalPosition == "NaN")
+                return null;
             return new PositionData()
             {
                 ScreenPosition = int.Parse(items[0]),
-                HorizontalPosition = GetIntegerValue(items[1]),
-                VerticalPosition = GetIntegerValue(items[2])
+                HorizontalPosition = GetIntegerValue(horizontalPosition),
+                VerticalPosition = GetIntegerValue(verticalPosition)
             };
         }
 

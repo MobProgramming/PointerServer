@@ -15,11 +15,7 @@
     position: relative;
 }
 
-.lookHereImage {
-    position: relative;
-    left: 50px;
-    top: 50px;
-}
+
 
 .activeMonitor {
      height: 60px;
